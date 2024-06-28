@@ -2,7 +2,7 @@
 
 RUN (apt-get update || true) && DEBIAN_FRONTEND=noninteractive apt-get install -y -o Dpkg::Options::="--force-confold" --no-install-recommends --no-install-suggests apt-utils curl gnupg2 ca-certificates
 
-RUN curl https://public.dhe.ibm.com/software/ibmi/products/odbc/debs/dists/1.1.0/ibmi-acs-1.1.0.list | sudo tee /etc/apt/sources.list.d/ibmi-acs-1.1.0.list
+RUN if [ "$(uname -m)" = "arm64" -o "$(uname -m)" = "aarch64" ] ; then curl -O https://public.dhe.ibm.com/ibmdl/export/pub/software/data/db2/drivers/odbc_cli/macos64_odbc_cli.tar.gz ; tar -xvzf macos64_odbc_cli.tar.gz ; mkdir -p /opt/ibm/odbc_cli ; mv clidriver /opt/ibm/odbc_cli/ ; else RUN curl https://public.dhe.ibm.com/software/ibmi/products/odbc/debs/dists/1.1.0/ibmi-acs-1.1.0.list | sudo tee /etc/apt/sources.list.d/ibmi-acs-1.1.0.list ; fi
 
 RUN (apt-get update || true) && DEBIAN_FRONTEND=noninteractive apt-get install -y -o Dpkg::Options::="--force-confold" --no-install-recommends --no-install-suggests \
     build-essential \
@@ -15,4 +15,5 @@ RUN (apt-get update || true) && DEBIAN_FRONTEND=noninteractive apt-get install -
     unixodbc-dev \
     locales
 
-RUN apt-get install -y ibm-iaccess php${DDEV_PHP_VERSION}-odbc
+RUN if [ "$(uname -m)" != "arm64" -a "$(uname -m)" != "aarch64" ] ; then apt-get install -y ibm-iaccess ; fi
+RUN apt-get install php${DDEV_PHP_VERSION}-odbc
