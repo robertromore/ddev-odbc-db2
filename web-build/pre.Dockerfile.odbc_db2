@@ -2,7 +2,7 @@
 
 RUN (apt-get update || true) && DEBIAN_FRONTEND=noninteractive apt-get install -y -o Dpkg::Options::="--force-confold" --no-install-recommends --no-install-suggests apt-utils curl gnupg2 ca-certificates
 
-RUN if [ "$(uname -m)" = "arm64" -o "$(uname -m)" = "aarch64" ] ; then curl -O https://public.dhe.ibm.com/ibmdl/export/pub/software/data/db2/drivers/odbc_cli/macos64_odbc_cli.tar.gz ; tar -xvzf macos64_odbc_cli.tar.gz ; mkdir -p /opt/ibm/odbc_cli ; mv clidriver /opt/ibm/odbc_cli/ ; else RUN curl https://public.dhe.ibm.com/software/ibmi/products/odbc/debs/dists/1.1.0/ibmi-acs-1.1.0.list | sudo tee /etc/apt/sources.list.d/ibmi-acs-1.1.0.list ; fi
+RUN if [ "$(uname -m)" = "arm64" -o "$(uname -m)" = "aarch64" ] ; then curl -O https://public.dhe.ibm.com/ibmdl/export/pub/software/data/db2/drivers/odbc_cli/macos64_odbc_cli.tar.gz ; tar -xvzf macos64_odbc_cli.tar.gz ; mkdir -p /opt/ibm/odbc_cli ; mv clidriver /opt/ibm/odbc_cli/ ; else curl https://public.dhe.ibm.com/software/ibmi/products/odbc/debs/dists/1.1.0/ibmi-acs-1.1.0.list | sudo tee /etc/apt/sources.list.d/ibmi-acs-1.1.0.list ; fi
 
 RUN (apt-get update || true) && DEBIAN_FRONTEND=noninteractive apt-get install -y -o Dpkg::Options::="--force-confold" --no-install-recommends --no-install-suggests \
     build-essential \
